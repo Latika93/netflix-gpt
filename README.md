@@ -12,3 +12,6 @@
 - NetflixGPT
     - Search Bar
     - Movie Suggestions
+
+Note: Formic for form
+
