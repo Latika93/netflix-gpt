@@ -1,15 +1,21 @@
 import React, { useRef, useState } from 'react'
 import Header from './Header'
 import { checkValidation } from '../utils/validate';
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { auth } from '../utils/firebase';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { addUser } from '../utils/userSlice';
 
 
 const Login = () => {
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const [isSignIn, setIsSignIn] = useState(true);
     const [errorMessage, setErrorMessage] = useState(null);
 
+    const name = useRef();
     const email = useRef(null);
     const password = useRef(null);
 
@@ -18,6 +24,7 @@ const Login = () => {
     }
 
     const validate = () => {
+
         console.log(email);
         console.log(password);
 
@@ -31,8 +38,20 @@ const Login = () => {
                 .then((userCredential) => {
                     // Signed up 
                     const user = userCredential.user;
-                    console.log(user);
-                    // ...
+                    updateProfile(user, {
+                        displayName: name.current.value,
+                        photoURL: 'https://avatars.githubusercontent.com/u/88475404?v=4'
+                    })
+                        .then(() => {
+                            // See the UserRecord reference doc for the contents of userRecord.
+                            console.log('Successfully updated user');
+                            const { uid, email, displayName, photoURL } = auth.currentUser;
+                            dispatch(addUser({ uid: uid, email: email, displayName: displayName, photoURL: photoURL }));
+                            navigate("/browse");
+                        })
+                        .catch((error) => {
+                            setErrorMessage(error);
+                        });
                 })
                 .catch((error) => {
                     const errorCode = error.code;
@@ -46,12 +65,12 @@ const Login = () => {
                     // Signed in 
                     const user = userCredential.user;
                     console.log(user);
-                    // ...
+                    navigate("/browse");
                 })
                 .catch((error) => {
                     const errorCode = error.code;
                     const errorMessage = error.message;
-                    setErrorMessage(errorCode + " - " + errorMessage);  
+                    setErrorMessage(errorCode + " - " + errorMessage);
                 });
         }
     }
@@ -66,13 +85,13 @@ const Login = () => {
 
                 <form onSubmit={(e) => e.preventDefault()} className='absolute mx-auto my-36 right-0 left-0 bg-black p-12 w-3/12 text-white bg-opacity-75'>
                     <h1 className='font-bold text-3xl py-4'>{!isSignIn ? "Sign up" : "Sign in"}</h1>
-                    {!isSignIn && <input type='text' placeholder='Full Name' className='py-2 my-2 w-full bg-gray-700' />}
+                    {!isSignIn && <input ref={name} type='text' placeholder='Full Name' className='py-2 my-2 w-full bg-gray-700' />}
                     <input type='text' ref={email} placeholder='email' className='py-2 my-2 w-full bg-gray-700' />
                     <input type='password' ref={password} placeholder='password' className='py-2 my-2 w-full bg-gray-700' />
                     <p className='text-red-500'> {errorMessage}</p>
                     <button type='submit' className='py-2 my-4 w-full bg-red-700' onClick={validate}> {!isSignIn ? "Sign up" : "Sign in"}</button>
 
-                    <p onClick={toggleSignIn} >{!isSignIn ? "New to Netflix? Sign Up Now" : "Already a User? Sign in"}</p>
+                    <p onClick={toggleSignIn} >{!isSignIn ? "Already a User? Sign in" : "New to Netflix? Sign Up Now"}</p>
                 </form>
             </div>
         </>
