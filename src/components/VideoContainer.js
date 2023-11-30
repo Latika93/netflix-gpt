@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import { API_KEY } from '../utils/contants'
-import {useDispatch, useSelector} from 'react-redux';
+import React from 'react'
+import {useSelector} from 'react-redux';
 import useTrailerVideo from '../hooks/useTrailerVideo';
 
 const VideoContainer = ({movieId}) => {
