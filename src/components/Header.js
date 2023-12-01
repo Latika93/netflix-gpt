@@ -1,17 +1,18 @@
 import React, { useEffect } from 'react'
-import { LOGO } from '../utils/contants'
+import { LOGO, SUPPORTED_LANGUAGES } from '../utils/contants'
 import { useNavigate } from 'react-router-dom'
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { auth } from '../utils/firebase';
 import { useDispatch, useSelector } from 'react-redux';
 import { addUser, removeUser } from '../utils/userSlice';
 import { toggleGpt } from '../utils/gptStore';
+import {changeLanguage} from '../utils/configSlice'
 
 const Header = () => {
   const dispatch = useDispatch();
   const user = useSelector((store) => store.user);
-  console.log("USER : ", user);
   const navigate = useNavigate();
+  const gptOn = useSelector((store) => store.toggle.toggleValue)
 
   const handleSignOut = () => {
     signOut(auth).then(() => {
@@ -19,6 +20,10 @@ const Header = () => {
     }).catch((error) => {
       navigate('/')
     });
+  }
+
+  const handleLanguage = (e) => {
+    dispatch(changeLanguage(e.target.value));
   }
 
   useEffect(() => {
@@ -41,8 +46,15 @@ const Header = () => {
       <img className='w-44 mx-auto md:mx-0' src={LOGO} />
 
       {user &&
-        <div className="flex p-2 justify-between">
-          <h4 className='bg-purple-500 w-24 h-12 mr-4 text-white ' onClick={() => dispatch(toggleGpt())}>{"Gpt Search"}</h4>
+        <div className="flex p-2">
+          {gptOn && <select className='p-2 m-2 bg-gray-900 text-white' onChange={handleLanguage}>
+            {SUPPORTED_LANGUAGES.map((lang) => (
+              <option key={lang.identfier} value={lang.identfier}>
+                {lang.name}
+              </option>
+            ))}
+          </select>}
+          <h4 className='bg-purple-500 w-24 h-12 mr-4 text-white' onClick={() => dispatch(toggleGpt())}>{"Gpt Search"}</h4>
           <img className='hidden md:block w-12 h-12' src={user?.photoURL} />
           <button className='bg-red w-8 h-6 mx-4 text-white' onClick={handleSignOut}>Sign Out</button>
         </div>

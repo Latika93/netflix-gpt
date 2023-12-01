@@ -14,3 +14,6 @@
     - Movie Suggestions
 
 Note: Formic for form
+
+
+=> Multilingual

@@ -2,7 +2,6 @@ import React from 'react'
 import { IMG_CDN_URL } from '../utils/contants';
 
 const MovieCard = ({title, poster}) => {
-  console.log("yes sir");
   return (
     <div className='w-48'>
         

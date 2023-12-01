@@ -5,7 +5,7 @@ import { createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfi
 import { auth } from '../utils/firebase';
 import { useDispatch } from 'react-redux';
 import { addUser } from '../utils/userSlice';
-import { USER_AVATAR } from '../utils/contants';
+import { BG_IMG_URL, USER_AVATAR } from '../utils/contants';
 
 
 const Login = () => {
@@ -24,9 +24,6 @@ const Login = () => {
 
     const validate = () => {
 
-        console.log(email);
-        console.log(password);
-
         const message = checkValidation(email.current.value, password.current.value);
         setErrorMessage(message);
 
@@ -42,8 +39,6 @@ const Login = () => {
                         photoURL: USER_AVATAR
                     })
                         .then(() => {
-                            // See the UserRecord reference doc for the contents of userRecord.
-                            console.log('Successfully updated user');
                             const { uid, email, displayName, photoURL } = auth.currentUser;
                             dispatch(addUser({ uid: uid, email: email, displayName: displayName, photoURL: photoURL }));
                         })
@@ -67,8 +62,6 @@ const Login = () => {
                         photoURL: 'https://avatars.githubusercontent.com/u/88475404?v=4'
                     })
                         .then(() => {
-                            // See the UserRecord reference doc for the contents of userRecord.
-                            console.log('Successfully updated user');
                             const { uid, email, displayName, photoURL } = auth.currentUser;
                             dispatch(addUser({ uid: uid, email: email, displayName: displayName, photoURL: photoURL }));
                         })
@@ -89,7 +82,7 @@ const Login = () => {
             <div >
                 <Header />
                 <div className='absolute'>
-                    <img src="https://assets.nflxext.com/ffe/siteui/vlv3/d1532433-07b1-4e39-a920-0f08b81a489e/67033404-2df8-42e0-a5a0-4c8288b4da2c/IN-en-20231120-popsignuptwoweeks-perspective_alpha_website_large.jpg" />
+                    <img src={BG_IMG_URL} />
                 </div>
 
                 <form onSubmit={(e) => e.preventDefault()} className='absolute mx-auto my-36 right-0 left-0 bg-black p-12 w-3/12 text-white bg-opacity-75'>
