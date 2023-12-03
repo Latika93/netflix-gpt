@@ -6,7 +6,7 @@ import { auth } from '../utils/firebase';
 import { useDispatch, useSelector } from 'react-redux';
 import { addUser, removeUser } from '../utils/userSlice';
 import { toggleGpt } from '../utils/gptStore';
-import {changeLanguage} from '../utils/configSlice'
+import { changeLanguage } from '../utils/configSlice'
 
 const Header = () => {
   const dispatch = useDispatch();
@@ -42,7 +42,7 @@ const Header = () => {
   }, [])
 
   return (
-    <div className='absolute w-screen px-8 py-2 bg-gradient-to-b from-black z-10 flex flex-col md:flex-row justify-between'>
+    <div className='absolute w-screen px-8 py-2 bg-gradient-to-b from-black z-10 flex flex-col md:flex-row justify-between '>
       <img className='w-44 mx-auto md:mx-0' src={LOGO} />
 
       {user &&
@@ -54,9 +54,23 @@ const Header = () => {
               </option>
             ))}
           </select>}
-          <h4 className='bg-purple-500 w-24 h-12 mr-4 text-white' onClick={() => dispatch(toggleGpt())}>{"Gpt Search"}</h4>
-          <img className='hidden md:block w-12 h-12' src={user?.photoURL} />
-          <button className='bg-red w-8 h-6 mx-4 text-white' onClick={handleSignOut}>Sign Out</button>
+          <h4 className='py-2 px-4 mx-4 my-2 bg-indigo-400 text-white rounded-lg' onClick={() => dispatch(toggleGpt())}>
+            {gptOn ? "Home":"Search"}
+          </h4>
+
+
+
+          {/* <img className='hidden md:block w-12 h-12 hover:cursor-pointer' src={user?.photoURL} />
+          <button className='bg-red w-10 h-6 mx-4 text-white' onClick={handleSignOut}>Sign_Out</button> */}
+
+          <img
+            className="hidden md:block w-12 h-12"
+            alt="usericon"
+            src={user?.photoURL}
+          />
+          <button onClick={handleSignOut} className="font-bold text-white ">
+            (Sign Out)
+          </button>
         </div>
       }
     </div>

@@ -5,13 +5,15 @@ import { BG_IMG_URL } from '../utils/contants'
 
 const GptSearch = () => {
   return (
-    <div>
-      <div className='absolute -z-10'>
-        <img src={BG_IMG_URL} />
+    <>
+      <div className='fixed -z-10'>
+        <img className='h-screen object-cover sm:h-fit md:h-fit' src={BG_IMG_URL} />
       </div>
-      <GptSearchBar />
-      <GptMovieSuggestions />
-    </div>
+      <div className='pt-[30%] md:p-0'>
+        <GptSearchBar />
+        <GptMovieSuggestions />
+      </div>
+    </>
   )
 }
 
