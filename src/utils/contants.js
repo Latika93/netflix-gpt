@@ -21,5 +21,3 @@ export const SUPPORTED_LANGUAGES = [
   { identfier: "hindi", name: "Hindi" },
   { identfier: "spanish", name: "Spanish" }
 ]
-
-export const GPT_API_KEY = "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"
